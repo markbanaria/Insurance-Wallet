@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   http: ^1.2.2
   cupertino_icons: ^1.0.6
+  google_sign_in: ^5.0.7
+  flutter_secure_storage: ^5.0.2
 
 dev_dependencies:
   flutter_test:
