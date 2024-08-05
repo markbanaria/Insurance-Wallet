@@ -5,9 +5,9 @@ import '../services/policy_service.dart';
 class PolicyPage extends StatefulWidget {
   final String policyNumber;
   final String token;
-  final Map<String, dynamic> user;  // Add this line
+  final Map<String, dynamic> user;
 
-  PolicyPage({required this.policyNumber, required this.token, required this.user});  // Update this line
+  PolicyPage({required this.policyNumber, required this.token, required this.user});
 
   @override
   _PolicyPageState createState() => _PolicyPageState();
@@ -38,7 +38,7 @@ class _PolicyPageState extends State<PolicyPage> {
           } else if (!snapshot.hasData) {
             return Center(child: Text('No policy found.'));
           } else {
-            Policy policy = snapshot.data!;
+            Policy? policy = snapshot.data;
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -46,11 +46,11 @@ class _PolicyPageState extends State<PolicyPage> {
                 children: [
                   _buildUserCard(widget.user),
                   SizedBox(height: 20),
-                  _buildCard('Customer Information', _buildCustomerInfo(policy.customer)),
+                  if (policy?.customer != null) _buildCard('Customer Information', _buildCustomerInfo(policy!.customer!)),
                   SizedBox(height: 20),
-                  _buildCard('Contract Details', _buildContractInfo(policy.contract)),
+                  if (policy?.contract != null) _buildCard('Contract Details', _buildContractInfo(policy!.contract!)),
                   SizedBox(height: 20),
-                  _buildCard('Coverages', _buildCoveragesTable(policy.risks)),
+                  if (policy?.risks != null) _buildCard('Coverages', _buildCoveragesTable(policy!.risks!)),
                 ],
               ),
             );
@@ -108,10 +108,12 @@ class _PolicyPageState extends State<PolicyPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Name: ${customer.name}'),
-        Text('Email: ${customer.contact.email}'),
-        Text('Phone: ${customer.contact.phone}'),
-        Text('Address: ${customer.address.street}, ${customer.address.city}, ${customer.address.state}, ${customer.address.zipCode}, ${customer.address.country}'),
+        Text('Name: ${customer.name ?? 'N/A'}'),
+        Text('Email: ${customer.contact?.email ?? 'N/A'}'),
+        Text('Phone: ${customer.contact?.phone ?? 'N/A'}'),
+        Text('Address: ${customer.address?.street ?? 'N/A'}, ${customer.address?.city ?? 'N/A'}, ${customer.address?.state ?? 'N/A'}, ${customer.address?.zipCode ?? 'N/A'}, ${customer.address?.country ?? 'N/A'}'),
+        Text('Date of Birth: ${customer.dateOfBirth ?? 'N/A'}'),
+        Text('Gender: ${customer.gender ?? 'N/A'}'),
       ],
     );
   }
@@ -120,12 +122,13 @@ class _PolicyPageState extends State<PolicyPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Contract ID: ${contract.contractId}'),
-        Text('Premium: ${contract.premium.amount} ${contract.premium.currency} (${contract.premium.billingType})'),
-        Text('Plan: ${contract.planSelection}'),
-        Text('Start Date: ${contract.startDate}'),
-        Text('End Date: ${contract.endDate}'),
-        Text('Coverage Type: ${contract.coverageType}'),
+        Text('Contract ID: ${contract.contractId ?? 'N/A'}'),
+        Text('Premium: ${contract.premium?.amount?.toString() ?? 'N/A'} ${contract.premium?.currency ?? 'N/A'} (${contract.premium?.billingType ?? 'N/A'})'),
+        Text('Plan: ${contract.planSelection ?? 'N/A'}'),
+        Text('Start Date: ${contract.startDate ?? 'N/A'}'),
+        Text('End Date: ${contract.endDate ?? 'N/A'}'),
+        Text('Coverage Type: ${contract.coverageType ?? 'N/A'}'),
+        Text('Campaign: ${contract.campaign ?? 'N/A'}'),
       ],
     );
   }
@@ -136,22 +139,22 @@ class _PolicyPageState extends State<PolicyPage> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Plan Type: ${risk.planType}', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Plan Type: ${risk.planType ?? 'N/A'}', style: TextStyle(fontWeight: FontWeight.bold)),
             DataTable(
               columns: [
                 DataColumn(label: Text('Benefit')),
                 DataColumn(label: Text('Limit')),
                 DataColumn(label: Text('Deductible')),
               ],
-              rows: risk.benefits.map((benefit) {
+              rows: risk.benefits?.map((benefit) {
                 return DataRow(
                   cells: [
-                    DataCell(Text(benefit.name)),
-                    DataCell(Text('${benefit.limit.amount} ${benefit.limit.currency}')),
-                    DataCell(Text('${benefit.deductible.amount} ${benefit.deductible.currency}')),
+                    DataCell(Text(benefit.name ?? 'N/A')),
+                    DataCell(Text('${benefit.limit?.amount?.toString() ?? 'N/A'} ${benefit.limit?.currency ?? 'N/A'}')),
+                    DataCell(Text('${benefit.deductible?.amount?.toString() ?? 'N/A'} ${benefit.deductible?.currency ?? 'N/A'}')),
                   ],
                 );
-              }).toList(),
+              }).toList() ?? [],
             ),
           ],
         );

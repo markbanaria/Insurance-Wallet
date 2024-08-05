@@ -1,52 +1,49 @@
 class Policy {
-  final String policyNumber;
-  final Customer customer;
-  final Contract contract;
-  final List<Risk> risks;
-  final Underwriting underwriting;
+  final Customer? customer;
+  final Contract? contract;
+  final List<Risk>? risks;
+  final Underwriting? underwriting;
 
   Policy({
-    required this.policyNumber,
-    required this.customer,
-    required this.contract,
-    required this.risks,
-    required this.underwriting,
+    this.customer,
+    this.contract,
+    this.risks,
+    this.underwriting,
   });
 
   factory Policy.fromJson(Map<String, dynamic> json) {
     return Policy(
-      policyNumber: json['contract']['contract_id'],
-      customer: Customer.fromJson(json['customer']),
-      contract: Contract.fromJson(json['contract']),
-      risks: (json['risk'] as List).map((i) => Risk.fromJson(i)).toList(),
-      underwriting: Underwriting.fromJson(json['underwriting']),
+      customer: json['customer'] != null ? Customer.fromJson(json['customer']) : null,
+      contract: json['contract'] != null ? Contract.fromJson(json['contract']) : null,
+      risks: json['risk'] != null ? List<Risk>.from(json['risk'].map((x) => Risk.fromJson(x))) : null,
+      underwriting: json['underwriting'] != null ? Underwriting.fromJson(json['underwriting']) : null,
     );
   }
 }
 
 class Customer {
-  final String customerId;
-  final String name;
-  final Address address;
-  final Contact contact;
-  final String dateOfBirth;
-  final String gender;
+  final String? customerId;
+  final String? name;
+  final Address? address;
+  final Contact? contact;
+  final String? dateOfBirth;
+  final String? gender;
 
   Customer({
-    required this.customerId,
-    required this.name,
-    required this.address,
-    required this.contact,
-    required this.dateOfBirth,
-    required this.gender,
+    this.customerId,
+    this.name,
+    this.address,
+    this.contact,
+    this.dateOfBirth,
+    this.gender,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
       customerId: json['customer_id'],
       name: json['name'],
-      address: Address.fromJson(json['address']),
-      contact: Contact.fromJson(json['contact']),
+      address: json['address'] != null ? Address.fromJson(json['address']) : null,
+      contact: json['contact'] != null ? Contact.fromJson(json['contact']) : null,
       dateOfBirth: json['date_of_birth'],
       gender: json['gender'],
     );
@@ -54,18 +51,18 @@ class Customer {
 }
 
 class Address {
-  final String street;
-  final String city;
-  final String state;
-  final String zipCode;
-  final String country;
+  final String? street;
+  final String? city;
+  final String? state;
+  final String? zipCode;
+  final String? country;
 
   Address({
-    required this.street,
-    required this.city,
-    required this.state,
-    required this.zipCode,
-    required this.country,
+    this.street,
+    this.city,
+    this.state,
+    this.zipCode,
+    this.country,
   });
 
   factory Address.fromJson(Map<String, dynamic> json) {
@@ -80,12 +77,12 @@ class Address {
 }
 
 class Contact {
-  final String phone;
-  final String email;
+  final String? phone;
+  final String? email;
 
   Contact({
-    required this.phone,
-    required this.email,
+    this.phone,
+    this.email,
   });
 
   factory Contact.fromJson(Map<String, dynamic> json) {
@@ -97,35 +94,35 @@ class Contact {
 }
 
 class Contract {
-  final String contractId;
-  final Premium premium;
-  final Distributor distributor;
-  final String campaign;
-  final PaymentDetails paymentDetails;
-  final String planSelection;
-  final String startDate;
-  final String endDate;
-  final String coverageType;
+  final String? contractId;
+  final Premium? premium;
+  final Distributor? distributor;
+  final String? campaign;
+  final PaymentDetails? paymentDetails;
+  final String? planSelection;
+  final String? startDate;
+  final String? endDate;
+  final String? coverageType;
 
   Contract({
-    required this.contractId,
-    required this.premium,
-    required this.distributor,
-    required this.campaign,
-    required this.paymentDetails,
-    required this.planSelection,
-    required this.startDate,
-    required this.endDate,
-    required this.coverageType,
+    this.contractId,
+    this.premium,
+    this.distributor,
+    this.campaign,
+    this.paymentDetails,
+    this.planSelection,
+    this.startDate,
+    this.endDate,
+    this.coverageType,
   });
 
   factory Contract.fromJson(Map<String, dynamic> json) {
     return Contract(
       contractId: json['contract_id'],
-      premium: Premium.fromJson(json['premium']),
-      distributor: Distributor.fromJson(json['distributor']),
+      premium: json['premium'] != null ? Premium.fromJson(json['premium']) : null,
+      distributor: json['distributor'] != null ? Distributor.fromJson(json['distributor']) : null,
       campaign: json['campaign'],
-      paymentDetails: PaymentDetails.fromJson(json['payment_details']),
+      paymentDetails: json['payment_details'] != null ? PaymentDetails.fromJson(json['payment_details']) : null,
       planSelection: json['plan_selection'],
       startDate: json['start_date'],
       endDate: json['end_date'],
@@ -135,19 +132,19 @@ class Contract {
 }
 
 class Premium {
-  final double amount;
-  final String currency;
-  final String billingType;
+  final double? amount;
+  final String? currency;
+  final String? billingType;
 
   Premium({
-    required this.amount,
-    required this.currency,
-    required this.billingType,
+    this.amount,
+    this.currency,
+    this.billingType,
   });
 
   factory Premium.fromJson(Map<String, dynamic> json) {
     return Premium(
-      amount: json['amount'].toDouble(),
+      amount: json['amount'] != null ? json['amount'].toDouble() : null,
       currency: json['currency'],
       billingType: json['billing_type'],
     );
@@ -155,36 +152,36 @@ class Premium {
 }
 
 class Distributor {
-  final String type;
-  final String name;
-  final double commission;
+  final String? type;
+  final String? name;
+  final double? commission;
 
   Distributor({
-    required this.type,
-    required this.name,
-    required this.commission,
+    this.type,
+    this.name,
+    this.commission,
   });
 
   factory Distributor.fromJson(Map<String, dynamic> json) {
     return Distributor(
       type: json['type'],
       name: json['name'],
-      commission: json['commission'].toDouble(),
+      commission: json['commission'] != null ? json['commission'].toDouble() : null,
     );
   }
 }
 
 class PaymentDetails {
-  final String paymentMethod;
-  final String cardNumber;
-  final String expirationDate;
-  final Address billingAddress;
+  final String? paymentMethod;
+  final String? cardNumber;
+  final String? expirationDate;
+  final Address? billingAddress;
 
   PaymentDetails({
-    required this.paymentMethod,
-    required this.cardNumber,
-    required this.expirationDate,
-    required this.billingAddress,
+    this.paymentMethod,
+    this.cardNumber,
+    this.expirationDate,
+    this.billingAddress,
   });
 
   factory PaymentDetails.fromJson(Map<String, dynamic> json) {
@@ -192,64 +189,64 @@ class PaymentDetails {
       paymentMethod: json['payment_method'],
       cardNumber: json['card_number'],
       expirationDate: json['expiration_date'],
-      billingAddress: Address.fromJson(json['billing_address']),
+      billingAddress: json['billing_address'] != null ? Address.fromJson(json['billing_address']) : null,
     );
   }
 }
 
 class Risk {
-  final String riskId;
-  final List<Insured> insured;
-  final List<Benefit> benefits;
-  final List<OptionalBenefit> optionalBenefits;
-  final String planType;
-  final Premium premium;
+  final String? riskId;
+  final List<Insured>? insured;
+  final List<Benefit>? benefits;
+  final List<OptionalBenefit>? optionalBenefits;
+  final String? planType;
+  final Premium? premium;
 
   Risk({
-    required this.riskId,
-    required this.insured,
-    required this.benefits,
-    required this.optionalBenefits,
-    required this.planType,
-    required this.premium,
+    this.riskId,
+    this.insured,
+    this.benefits,
+    this.optionalBenefits,
+    this.planType,
+    this.premium,
   });
 
   factory Risk.fromJson(Map<String, dynamic> json) {
     return Risk(
       riskId: json['risk_id'],
-      insured: (json['insured'] as List).map((i) => Insured.fromJson(i)).toList(),
-      benefits: (json['benefits'] as List).map((i) => Benefit.fromJson(i)).toList(),
-      optionalBenefits: (json['optional_benefits'] as List).map((i) => OptionalBenefit.fromJson(i)).toList(),
+      insured: json['insured'] != null ? List<Insured>.from(json['insured'].map((x) => Insured.fromJson(x))) : null,
+      benefits: json['benefits'] != null ? List<Benefit>.from(json['benefits'].map((x) => Benefit.fromJson(x))) : null,
+      optionalBenefits: json['optional_benefits'] != null ? List<OptionalBenefit>.from(json['optional_benefits'].map((x) => OptionalBenefit.fromJson(x))) : null,
       planType: json['plan_type'],
-      premium: Premium.fromJson(json['premium']),
+      premium: json['premium'] != null ? Premium.fromJson(json['premium']) : null,
     );
   }
 }
 
 class Insured {
-  final String insuredId;
-  final String name;
-  final int age;
-  final String relationship;
-  final String gender;
-  final bool smoker;
-  final bool preExistingConditions;
+  final String? insuredId;
+  final String? name;
+  final int? age;
+  final String? relationship;
+  final String? gender;
+  final bool? smoker;
+  final bool? preExistingConditions;
 
   Insured({
-    required this.insuredId,
-    required this.name,
-    required this.age,
-    required this.relationship,
-    required this.gender,
-    required this.smoker,
-    required this.preExistingConditions,
+    this.insuredId,
+    this.name,
+    this.age,
+    this.relationship,
+    this.gender,
+    this.smoker,
+    this.preExistingConditions,
   });
 
   factory Insured.fromJson(Map<String, dynamic> json) {
     return Insured(
       insuredId: json['insured_id'],
       name: json['name'],
-      age: json['age'],
+      age: json['age'] != null ? json['age'] : null,
       relationship: json['relationship'],
       gender: json['gender'],
       smoker: json['smoker'],
@@ -259,39 +256,39 @@ class Insured {
 }
 
 class Benefit {
-  final String benefitId;
-  final String name;
-  final Limit limit;
-  final Deductible deductible;
+  final String? benefitId;
+  final String? name;
+  final Limit? limit;
+  final Deductible? deductible;
 
   Benefit({
-    required this.benefitId,
-    required this.name,
-    required this.limit,
-    required this.deductible,
+    this.benefitId,
+    this.name,
+    this.limit,
+    this.deductible,
   });
 
   factory Benefit.fromJson(Map<String, dynamic> json) {
     return Benefit(
       benefitId: json['benefit_id'],
       name: json['name'],
-      limit: Limit.fromJson(json['limit']),
-      deductible: Deductible.fromJson(json['deductible']),
+      limit: json['limit'] != null ? Limit.fromJson(json['limit']) : null,
+      deductible: json['deductible'] != null ? Deductible.fromJson(json['deductible']) : null,
     );
   }
 }
 
 class OptionalBenefit {
-  final String benefitId;
-  final String name;
-  final bool selected;
-  final AdditionalPremium additionalPremium;
+  final String? benefitId;
+  final String? name;
+  final bool? selected;
+  final AdditionalPremium? additionalPremium;
 
   OptionalBenefit({
-    required this.benefitId,
-    required this.name,
-    required this.selected,
-    required this.additionalPremium,
+    this.benefitId,
+    this.name,
+    this.selected,
+    this.additionalPremium,
   });
 
   factory OptionalBenefit.fromJson(Map<String, dynamic> json) {
@@ -299,88 +296,88 @@ class OptionalBenefit {
       benefitId: json['benefit_id'],
       name: json['name'],
       selected: json['selected'],
-      additionalPremium: AdditionalPremium.fromJson(json['additional_premium']),
+      additionalPremium: json['additional_premium'] != null ? AdditionalPremium.fromJson(json['additional_premium']) : null,
+    );
+  }
+}
+
+class AdditionalPremium {
+  final double? amount;
+  final String? currency;
+
+  AdditionalPremium({
+    this.amount,
+    this.currency,
+  });
+
+  factory AdditionalPremium.fromJson(Map<String, dynamic> json) {
+    return AdditionalPremium(
+      amount: json['amount'] != null ? json['amount'].toDouble() : null,
+      currency: json['currency'],
     );
   }
 }
 
 class Limit {
-  final double amount;
-  final String currency;
+  final double? amount;
+  final String? currency;
 
   Limit({
-    required this.amount,
-    required this.currency,
+    this.amount,
+    this.currency,
   });
 
   factory Limit.fromJson(Map<String, dynamic> json) {
     return Limit(
-      amount: json['amount'].toDouble(),
+      amount: json['amount'] != null ? json['amount'].toDouble() : null,
       currency: json['currency'],
     );
   }
 }
 
 class Deductible {
-  final double amount;
-  final String currency;
+  final double? amount;
+  final String? currency;
 
   Deductible({
-    required this.amount,
-    required this.currency,
+    this.amount,
+    this.currency,
   });
 
   factory Deductible.fromJson(Map<String, dynamic> json) {
     return Deductible(
-      amount: json['amount'].toDouble(),
-      currency: json['currency'],
-    );
-  }
-}
-
-class AdditionalPremium {
-  final double amount;
-  final String currency;
-
-  AdditionalPremium({
-    required this.amount,
-    required this.currency,
-  });
-
-  factory AdditionalPremium.fromJson(Map<String, dynamic> json) {
-    return AdditionalPremium(
-      amount: json['amount'].toDouble(),
+      amount: json['amount'] != null ? json['amount'].toDouble() : null,
       currency: json['currency'],
     );
   }
 }
 
 class Underwriting {
-  final List<Question> questions;
-  final String results;
+  final List<Question>? questions;
+  final String? results;
 
   Underwriting({
-    required this.questions,
-    required this.results,
+    this.questions,
+    this.results,
   });
 
   factory Underwriting.fromJson(Map<String, dynamic> json) {
     return Underwriting(
-      questions: (json['questions'] as List).map((i) => Question.fromJson(i)).toList(),
+      questions: json['questions'] != null ? List<Question>.from(json['questions'].map((x) => Question.fromJson(x))) : null,
       results: json['results'],
     );
   }
 }
 
 class Question {
-  final String questionId;
-  final String question;
-  final String answer;
+  final String? questionId;
+  final String? question;
+  final String? answer;
 
   Question({
-    required this.questionId,
-    required this.question,
-    required this.answer,
+    this.questionId,
+    this.question,
+    this.answer,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) {

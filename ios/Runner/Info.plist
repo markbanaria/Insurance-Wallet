@@ -45,5 +45,26 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!-- Replace this value with your REVERSED_CLIENT_ID -->
+				<string>com.googleusercontent.apps.203152451447-sj4jv9tmfdh8u0ga2g534hbrcnahtcpf</string>
+			</array>
+		</dict>
+	</array>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-XXXXXXXXXXXXXXXX~YYYYYYYYYY</string> <!-- Only required if you are using Google Mobile Ads -->
+	<key>GoogleSignIn</key>
+	<dict>
+		<key>ClientId</key>
+		<string>YOUR_CLIENT_ID</string>
+		<key>ServerClientId</key>
+		<string>YOUR_SERVER_CLIENT_ID</string>
+	</dict>
 </dict>
 </plist>

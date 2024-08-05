@@ -1,7 +1,12 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'pages/policy_number_page.dart';
 
-void main() {
+Future<void> main() async {
+  if (!kIsWeb) {
+    await dotenv.load(fileName: ".env");
+  }
   runApp(MyApp());
 }
 

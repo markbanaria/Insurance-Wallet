@@ -9,12 +9,19 @@ class PolicyService {
     final response = await http.get(
       Uri.parse('$baseUrl/$policyNumber'),
       headers: {
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer yJ45fJ234lK8jH765uI90o876t5r4321eR',
       },
     );
 
     if (response.statusCode == 200) {
-      return Policy.fromJson(json.decode(response.body));
+      print('Response body: ${response.body}'); // Print the response
+      final Map<String, dynamic> decodedJson = json.decode(response.body);
+      if (decodedJson.containsKey('policy')) {
+        return Policy.fromJson(decodedJson['policy']);
+      } else {
+        print('Policy key not found in the response.');
+        return null;
+      }
     } else {
       print('Failed to load policy');
       return null;
