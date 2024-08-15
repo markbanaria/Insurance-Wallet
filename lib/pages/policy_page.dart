@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../models/policy.dart';
 import '../services/policy_service.dart';
+import 'survey.dart'; // Import the SurveyPage
 
 class PolicyPage extends StatefulWidget {
   final String policyNumber;
@@ -15,11 +18,33 @@ class PolicyPage extends StatefulWidget {
 
 class _PolicyPageState extends State<PolicyPage> {
   late Future<Policy?> _policy;
+  bool _showSurveyFab = false;
 
   @override
   void initState() {
     super.initState();
     _policy = PolicyService().fetchPolicy(widget.policyNumber, widget.token);
+    _checkSurveyEligibility();
+  }
+
+  Future<void> _checkSurveyEligibility() async {
+    final response = await http.post(
+      Uri.parse('https://pas-rust.vercel.app/api/public/customers/survey'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'customerId': widget.policyNumber}),
+    );
+
+    if (response.statusCode == 200) {
+      final result = jsonDecode(response.body);
+      if (result['showsurvey'] == true) {  // Check the 'showsurvey' field
+        setState(() {
+          _showSurveyFab = true;
+        });
+      }
+    } else {
+      // Handle API errors if needed
+      print('Failed to check survey eligibility: ${response.statusCode}');
+    }
   }
 
   @override
@@ -57,6 +82,18 @@ class _PolicyPageState extends State<PolicyPage> {
           }
         },
       ),
+      floatingActionButton: _showSurveyFab
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SurveyPage()), // Navigate to SurveyPage
+                );
+              },
+              child: Icon(Icons.feedback),
+              tooltip: 'Take Survey',
+            )
+          : null,
     );
   }
 

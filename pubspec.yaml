@@ -11,11 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.2.2
+  http: ^0.13.6
   cupertino_icons: ^1.0.6
   google_sign_in: ^5.0.7
   flutter_secure_storage: ^5.0.2
   flutter_dotenv: ^5.0.2
+  flutter_cx_nps_survey:
+    git:
+      url: https://github.com/markbanaria/survey-form.git
+      ref: master
 
 dev_dependencies:
   flutter_test:
