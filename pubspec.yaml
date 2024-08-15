@@ -16,6 +16,7 @@ dependencies:
   google_sign_in: ^5.0.7
   flutter_secure_storage: ^5.0.2
   flutter_dotenv: ^5.0.2
+  fluttertoast: ^8.0.8
   flutter_cx_nps_survey:
     git:
       url: https://github.com/markbanaria/survey-form.git

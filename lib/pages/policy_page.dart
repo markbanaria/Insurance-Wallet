@@ -83,17 +83,56 @@ class _PolicyPageState extends State<PolicyPage> {
         },
       ),
       floatingActionButton: _showSurveyFab
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SurveyPage()), // Navigate to SurveyPage
+        ? FloatingActionButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SurveyPage()),
+              );
+
+              // If the survey was completed successfully, hide the FAB and show a SnackBar
+              if (result == true) {
+                setState(() {
+                  _showSurveyFab = false;
+                });
+
+                // Show a success SnackBar that remains until dismissed
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Survey submitted successfully!'),
+                    backgroundColor: Colors.green,
+                    duration: Duration(days: 365), // Keep it on screen until dismissed
+                    action: SnackBarAction(
+                      label: 'Dismiss',
+                      textColor: Colors.white,
+                      onPressed: () {
+                        // Hide the SnackBar when the user presses 'Dismiss'
+                      },
+                    ),
+                  ),
                 );
-              },
-              child: Icon(Icons.feedback),
-              tooltip: 'Take Survey',
-            )
-          : null,
+              } else if (result == false) {
+                // Show an error SnackBar if submission failed
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Failed to submit survey. Please try again.'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(days: 365), // Keep it on screen until dismissed
+                    action: SnackBarAction(
+                      label: 'Dismiss',
+                      textColor: Colors.white,
+                      onPressed: () {
+                        // Hide the SnackBar when the user presses 'Dismiss'
+                      },
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Icon(Icons.feedback),
+            tooltip: 'Take Survey',
+          )
+        : null,
     );
   }
 

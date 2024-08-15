@@ -4,7 +4,6 @@ import 'package:flutter_cx_nps_survey/flutter_cx_nps_survey.dart';
 class SurveyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Define the survey configuration
     final surveyConfig = SurveyConfig(
       title: 'Customer Satisfaction Survey',
       description: 'Please answer the following questions to help us improve our service:',
@@ -26,7 +25,6 @@ class SurveyPage extends StatelessWidget {
       ],
     );
 
-    // Configure the submission for HTTP
     final submissionConfigHttp = SubmissionConfig(
       type: SubmissionType.http,
       url: 'https://pas-rust.vercel.app/api/public/customers/postfeedbackresponse',
@@ -34,14 +32,28 @@ class SurveyPage extends StatelessWidget {
       bodyBuilder: (data) {
         return data; // Directly use the survey data as the body
       },
+      onSubmit: () {
+        print('Survey submission started.');
+      },
+      onSuccess: () {
+        // Return to the policy page with a success result
+        Navigator.of(context).pop(true);
+      },
+      onError: (error) {
+        // Return to the policy page with an error result
+        Navigator.of(context).pop(false);
+      },
     );
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Survey'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SurveyForm(
           config: surveyConfig,
-          submissionConfig: submissionConfigHttp, // You can also use a GraphQL submission config if needed
+          submissionConfig: submissionConfigHttp,
         ),
       ),
     );
