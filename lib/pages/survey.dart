@@ -46,14 +46,24 @@ class SurveyPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Survey'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SurveyForm(
-          config: surveyConfig,
-          submissionConfig: submissionConfigHttp,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 600),
+            child: Card(
+              color: Colors.white, // Card background color
+              elevation: 2,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SurveyForm(
+                  config: surveyConfig,
+                  submissionConfig: submissionConfigHttp,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

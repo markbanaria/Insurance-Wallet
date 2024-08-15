@@ -36,13 +36,12 @@ class _PolicyPageState extends State<PolicyPage> {
 
     if (response.statusCode == 200) {
       final result = jsonDecode(response.body);
-      if (result['showsurvey'] == true) {  // Check the 'showsurvey' field
+      if (result['showsurvey'] == true) {
         setState(() {
           _showSurveyFab = true;
         });
       }
     } else {
-      // Handle API errors if needed
       print('Failed to check survey eligibility: ${response.statusCode}');
     }
   }
@@ -53,34 +52,47 @@ class _PolicyPageState extends State<PolicyPage> {
       appBar: AppBar(
         title: Text('Policy Details'),
       ),
-      body: FutureBuilder<Policy?>(
-        future: _policy,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData) {
-            return Center(child: Text('No policy found.'));
-          } else {
-            Policy? policy = snapshot.data;
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildUserCard(widget.user),
-                  SizedBox(height: 20),
-                  if (policy?.customer != null) _buildCard('Customer Information', _buildCustomerInfo(policy!.customer!)),
-                  SizedBox(height: 20),
-                  if (policy?.contract != null) _buildCard('Contract Details', _buildContractInfo(policy!.contract!)),
-                  SizedBox(height: 20),
-                  if (policy?.risks != null) _buildCard('Coverages', _buildCoveragesTable(policy!.risks!)),
-                ],
-              ),
-            );
-          }
-        },
+      body: Center(  // Center the entire body content
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 16), // Clearance from AppBar
+                _buildUserCard(widget.user),
+                SizedBox(height: 20),
+                FutureBuilder<Policy?>(
+                  future: _policy,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData) {
+                      return Center(child: Text('No policy found.'));
+                    } else {
+                      Policy? policy = snapshot.data;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          if (policy?.customer != null) 
+                            _buildCard('Customer Information', _buildCustomerInfo(policy!.customer!)),
+                          SizedBox(height: 20),
+                          if (policy?.contract != null) 
+                            _buildCard('Contract Details', _buildContractInfo(policy!.contract!)),
+                          SizedBox(height: 20),
+                          if (policy?.risks != null) 
+                            _buildCard('Coverages', _buildCoveragesTable(policy!.risks!)),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
       floatingActionButton: _showSurveyFab
         ? FloatingActionButton(
@@ -90,13 +102,11 @@ class _PolicyPageState extends State<PolicyPage> {
                 MaterialPageRoute(builder: (context) => SurveyPage()),
               );
 
-              // If the survey was completed successfully, hide the FAB and show a SnackBar
               if (result == true) {
                 setState(() {
                   _showSurveyFab = false;
                 });
 
-                // Show a success SnackBar that remains until dismissed
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Survey submitted successfully!'),
@@ -105,14 +115,11 @@ class _PolicyPageState extends State<PolicyPage> {
                     action: SnackBarAction(
                       label: 'Dismiss',
                       textColor: Colors.white,
-                      onPressed: () {
-                        // Hide the SnackBar when the user presses 'Dismiss'
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 );
               } else if (result == false) {
-                // Show an error SnackBar if submission failed
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Failed to submit survey. Please try again.'),
@@ -121,9 +128,7 @@ class _PolicyPageState extends State<PolicyPage> {
                     action: SnackBarAction(
                       label: 'Dismiss',
                       textColor: Colors.white,
-                      onPressed: () {
-                        // Hide the SnackBar when the user presses 'Dismiss'
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 );
@@ -138,9 +143,11 @@ class _PolicyPageState extends State<PolicyPage> {
 
   Widget _buildUserCard(Map<String, dynamic> user) {
     return Card(
+      color: Colors.white,
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Padding(
+      child: Container(
+        width: double.infinity,
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
@@ -149,12 +156,14 @@ class _PolicyPageState extends State<PolicyPage> {
               radius: 30,
             ),
             SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(user['name'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Text(user['email']),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(user['name'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(user['email']),
+                ],
+              ),
             ),
           ],
         ),
@@ -163,18 +172,23 @@ class _PolicyPageState extends State<PolicyPage> {
   }
 
   Widget _buildCard(String title, Widget content) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-            content,
-          ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 600),
+      child: Card(
+        color: Colors.white,
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              content,
+            ],
+          ),
         ),
       ),
     );
@@ -211,6 +225,7 @@ class _PolicyPageState extends State<PolicyPage> {
 
   Widget _buildCoveragesTable(List<Risk> risks) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: risks.map((risk) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
