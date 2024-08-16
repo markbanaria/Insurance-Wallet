@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'policy_page.dart';
+import 'survey_blank.dart'; // Import the SurveyBlankPage
 import '../services/google_sign_in_service.dart';
 
 class SignInPage extends StatelessWidget {
@@ -22,7 +23,7 @@ class SignInPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0), // Horizontal padding
         child: Center(
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 600), // Max width of 600px
+            constraints: BoxConstraints(maxWidth: 350), // Max width of 600px
             child: Column(
               mainAxisSize: MainAxisSize.min, // Center content vertically
               children: [
@@ -102,6 +103,41 @@ class SignInPage extends StatelessWidget {
                           },
                           child: Text('Login as a Test User'),
                           style: ElevatedButton.styleFrom(
+                            minimumSize: Size(double.infinity, 36), // Fill the width of the card
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20), // Space between cards
+                Card(
+                  color: Colors.white, // Card background color
+                  elevation: 4, // Optional elevation for card shadow
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min, // Use min size to center content
+                      crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch to fill horizontal space
+                      children: [
+                        Text(
+                          'Blank Survey Demo',
+                          style: TextStyle(fontSize: 16.0), // Adjust text style as needed
+                          textAlign: TextAlign.center, // Center-align text
+                        ),
+                        SizedBox(height: 20),
+                        OutlinedButton(
+                          onPressed: () {
+                            // Navigate to the Blank Survey Page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SurveyBlankPage(),
+                              ),
+                            );
+                          },
+                          child: Text('Go to Blank Survey'),
+                          style: OutlinedButton.styleFrom(
                             minimumSize: Size(double.infinity, 36), // Fill the width of the card
                           ),
                         ),

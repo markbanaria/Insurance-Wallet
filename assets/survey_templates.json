@@ -1,0 +1,59 @@
+{
+  "NPS": {
+    "title": "Net Promoter Score Survey",
+    "description": "Please rate your likelihood to recommend our service.",
+    "questions": [
+      {
+        "question": "On a scale of 0-10, how likely are you to recommend our service?",
+        "inputType": "starRating",
+        "maxRating": 10
+      }
+    ]
+  },
+  "CSAT": {
+    "title": "Customer Satisfaction Survey",
+    "description": "Rate your satisfaction with our service.",
+    "questions": [
+      {
+        "question": "How satisfied are you with our service?",
+        "inputType": "radioButton",
+        "options": ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very Dissatisfied"]
+      },
+      {
+        "question": "Rate the quality of our products",
+        "inputType": "starRating",
+        "maxRating": 5
+      }
+    ]
+  },
+  "Custom": {
+    "title": "Custom Survey",
+    "description": "This template showcases various input widgets.",
+    "questions": [
+      {
+        "question": "What is your name?",
+        "inputType": "textField"
+      },
+      {
+        "question": "How do you rate our service?",
+        "inputType": "starRating",
+        "maxRating": 10
+      },
+      {
+        "question": "Select your preferred features:",
+        "inputType": "checkbox",
+        "options": ["Feature A", "Feature B", "Feature C", "Feature D"]
+      },
+      {
+        "question": "How likely are you to use our service again?",
+        "inputType": "slider",
+        "minSliderValue": 0,
+        "maxSliderValue": 100
+      },
+      {
+        "question": "Any additional comments?",
+        "inputType": "textField"
+      }
+    ]
+  }
+}
